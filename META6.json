@@ -1,0 +1,19 @@
+{
+  "meta-version": "0",
+  "name": "Test::CLI",
+  "version": "0.0.0",
+  "auth": "github:littlebenlittle",
+  "api": "0.0",
+  "description": "Test suite for CLI apps",
+  "source-url": "git://github.com/littlebenlittle/raku-cli-test",
+  "perl": "6.d",
+  "author": "Ben Little <ben.little@fruition.net>",
+  "tags": [
+    "test",
+    "cli"
+  ],
+  "license": "Artistic-2.0",
+  "provides": {
+    "Test::CLI": "lib/TestCLI.rakumod"
+  }
+}
