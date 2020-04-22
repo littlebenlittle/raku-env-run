@@ -1,5 +1,5 @@
 
-unit module Test::CLI;
+unit module Env::Run;
 
 our sub parse-kvs (Str:D $kvs) is export {
     my grammar kv {

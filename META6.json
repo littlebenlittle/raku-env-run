@@ -5,7 +5,7 @@
   "auth": "github:littlebenlittle",
   "api": "0.0",
   "description": "run processes in various environments",
-  "source-url": "git://github.com/littlebenlittle/raku-run-env",
+  "source-url": "git://github.com/littlebenlittle/raku-env-run",
   "perl": "6.d",
   "author": "Ben Little <ben.little@fruition.net>",
   "tags": [
@@ -16,6 +16,6 @@
   ],
   "license": "Artistic-2.0",
   "provides": {
-    "Env::Run": "lib/TestCLI.rakumod"
+    "Env::Run": "lib/EnvRun.rakumod"
   }
 }

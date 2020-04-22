@@ -1,6 +1,6 @@
 
 use Test;
-use Test::CLI;
+use Env::Run;
 
 cli-timeout 0.123;
 ok cli-timeout() == 0.123, "set and get cli timeout";

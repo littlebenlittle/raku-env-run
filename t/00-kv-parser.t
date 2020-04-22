@@ -1,6 +1,6 @@
 
 use Test;
-use Test::CLI;
+use Env::Run;
 
 subtest "basic" => {
     try {
