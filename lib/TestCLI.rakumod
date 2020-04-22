@@ -15,7 +15,7 @@ our sub parse-kvs (Str:D $kvs) is export {
             | "'" <raw-val> "'" 
             | '"' <raw-val> '"' 
         }
-        token raw-val { [<.alnum> | "-" | \h]+ }
+        token raw-val { [<.alnum> | "-" | ":" | \h]+ }
         token ws  { \v | \h }
     }
     my class kv-actions {

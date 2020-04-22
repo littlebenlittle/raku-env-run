@@ -18,6 +18,7 @@ cli-envs(
              _SYSTEM='a'
              EOS
 );
+
 is-deeply cli-envs(), %(
     env1 => %(
         MY_ENV_VAR => "some-value",
@@ -31,6 +32,11 @@ is-deeply cli-envs(), %(
          _SYSTEM => "a",
     ),
 ), "set and get envs";
+
+cli-envs(env1 => 'GRPC_TARGET=localhost:50051');
+
+is-deeply cli-envs()<env1>, %(GRPC_TARGET => "localhost:50051"),
+    "test setting var to host:port";
 
 done-testing();
 
