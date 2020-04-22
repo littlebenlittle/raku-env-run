@@ -38,5 +38,15 @@ cli-envs(env1 => 'GRPC_TARGET=localhost:50051');
 is-deeply cli-envs()<env1>, %(GRPC_TARGET => "localhost:50051"),
     "set var to host:port";
 
+envs(
+    env1 => "NAME=world",
+    env2 => "NAME=littlebenlittle",
+);
+
+is-deeply envs(), %(
+    env1 => %( NAME => "world" ),
+    env2 => %( NAME => "littlebenlittle" ),
+), "env parsing works with envs()";
+
 done-testing();
 
