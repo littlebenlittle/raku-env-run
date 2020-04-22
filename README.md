@@ -1,5 +1,5 @@
 
-# Test::CLI
+# Env::Run
 
-Tools for testing CLI apps with support for asynchronous client-server testing.
+Run subprocesses in various contexts by modifying environment variables.
 
