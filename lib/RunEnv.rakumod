@@ -49,3 +49,37 @@ our sub cli-envs (*%envs) is export {
     return %ENVS;
 }
 
+sub envs(*%new-envs) {
+    state %envs;
+    %envs = %new-envs if %new-envs;
+    return %envs
+}
+
+
+our sub run-cmd (@cmd, *%env-tests) is export {
+    # if '*' ∈ %env-tests {
+    #     for %ENVS {
+    #     }
+    # }
+    #%env-tests.say;
+    #%env-tests.flat.say;
+    for %env-tests.flat -> $a, $b {
+        #$a.say;
+        #$b.say;
+    }
+    return;
+    for %env-tests -> $name, &test {
+        my $proc = Proc::Async.new: @cmd, :out, :err;
+        my $result = %();
+        react {
+            whenever $proc.stdout { $result<stdout> = $_; }
+            whenever $proc.stderr { $result<stderr> = $_; }
+            whenever $proc.start( ENV => %ENVS{$_} ) {
+                say $result;
+                %env-tests<*>($result);
+                done
+            }
+        }
+    }
+}
+

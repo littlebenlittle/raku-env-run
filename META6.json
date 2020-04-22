@@ -1,19 +1,21 @@
 {
   "meta-version": "0",
-  "name": "Test::CLI",
+  "name": "Env::Run",
   "version": "0.0.0",
   "auth": "github:littlebenlittle",
   "api": "0.0",
-  "description": "Test suite for CLI apps",
-  "source-url": "git://github.com/littlebenlittle/raku-cli-test",
+  "description": "run processes in various environments",
+  "source-url": "git://github.com/littlebenlittle/raku-run-env",
   "perl": "6.d",
   "author": "Ben Little <ben.little@fruition.net>",
   "tags": [
-    "test",
-    "cli"
+    "cli",
+    "run",
+    "env",
+    "test"
   ],
   "license": "Artistic-2.0",
   "provides": {
-    "Test::CLI": "lib/TestCLI.rakumod"
+    "Env::Run": "lib/TestCLI.rakumod"
   }
 }
