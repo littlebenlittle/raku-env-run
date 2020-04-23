@@ -1,7 +1,16 @@
 
 unit module Env::Run;
 
-our sub parse-kvs (Str:D $kvs) is export {
+state %envs;
+
+our sub envs (*%new-envs) is export {
+    for (%new-envs.kv) -> $name, $kvs {
+        %envs{$name} = parse-kvs($kvs)
+    }
+    return %envs
+}
+
+our sub parse-kvs (Str:D $kvs -->Hash:D) is export {
     my grammar kv {
         token TOP {
             <.ws>*
@@ -38,6 +47,8 @@ our proto cli-timeout (|) {*}
 our multi sub cli-timeout is export { $timeout = $^new-timeout; $timeout}
 our multi sub cli-timeout is export { $timeout }
 
+# TODO: ben.little 2020-04-22T11:57:46Z
+#   Deprecate cli-envs in favor of Env::Run::envs
 my %ENVS;
 our sub cli-envs (*%envs) is export {
     for %envs {
@@ -49,35 +60,30 @@ our sub cli-envs (*%envs) is export {
     return %ENVS;
 }
 
-sub envs(*%new-envs) {
-    state %envs;
-    %envs = %new-envs if %new-envs;
-    return %envs
+class Proc-Report {
+    has Proc $.proc;
+    has Str  $.stdout;
+    has Str  $.stderr;
 }
 
-
 our sub run-cmd (@cmd, *%env-tests) is export {
-    # if '*' ∈ %env-tests {
-    #     for %ENVS {
-    #     }
-    # }
-    #%env-tests.say;
-    #%env-tests.flat.say;
-    for %env-tests.flat -> $a, $b {
-        #$a.say;
-        #$b.say;
-    }
-    return;
-    for %env-tests -> $name, &test {
-        my $proc = Proc::Async.new: @cmd, :out, :err;
-        my $result = %();
+    for %env-tests.kv -> $name, &callback {
+        my %kvs = envs(){$name};
+        my $out = '';
+        my $err = '';
         react {
-            whenever $proc.stdout { $result<stdout> = $_; }
-            whenever $proc.stderr { $result<stderr> = $_; }
-            whenever $proc.start( ENV => %ENVS{$_} ) {
-                say $result;
-                %env-tests<*>($result);
-                done
+            with Proc::Async.new: @cmd, :out, :err {
+                whenever .stdout { $out ~= $_ };
+                whenever .stderr { $err ~= $_ };
+                whenever .start(:ENV(%kvs))  { 
+                    my $report = Proc-Report.new(
+                        proc   => $_,
+                        stdout => $out,
+                        stderr => $err,
+                    );
+                    &callback($report);
+                    done
+                };
             }
         }
     }
